@@ -1,0 +1,19 @@
+---
+- name: Enterprise Server Automation
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Validate OS support
+      assert:
+        that:
+          - ansible_os_family in ["Debian", "RedHat"]
+        fail_msg: "Unsupported OS"
+
+  roles:
+    - common
+    - users
+    - security
+    - patching
+    - nginx
+    - app_deploy
