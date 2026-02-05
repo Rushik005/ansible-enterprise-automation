@@ -1,0 +1,2 @@
+env: dev
+nginx_port: 80
