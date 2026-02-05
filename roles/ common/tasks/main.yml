@@ -1,0 +1,8 @@
+---
+- name: Install base packages
+  package:
+    name:
+      - curl
+      - vim
+      - git
+    state: present
