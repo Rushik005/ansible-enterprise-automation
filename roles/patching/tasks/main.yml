@@ -1,0 +1,10 @@
+---
+- name: Update all packages
+  package:
+    name: "*"
+    state: latest
+
+- name: Reboot if required
+  reboot:
+    msg: "Reboot triggered by Ansible patching"
+    reboot_timeout: 600
