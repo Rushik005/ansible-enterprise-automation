@@ -1,0 +1,2 @@
+env: stage
+nginx_port: 80
