@@ -63,3 +63,36 @@ jobs:
       - name: Deploy to ${{ matrix.env }}
         run: |
           ansible-playbook -i inventories/${{ matrix.env }}/hosts.yml site.yml --vault-password-file ~/.vault_pass.txt
+
+  prod:
+    name: Ansible – Production
+    runs-on: ubuntu-latest
+    needs: ansible
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install ansible
+
+      - name: SSH Setup
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Vault Setup
+        run: |
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > ~/.vault_pass.txt
+          chmod 600 ~/.vault_pass.txt
+
+      - name: Deploy Production
+        run: |
+          ansible-playbook -i inventories/prod/hosts.yml site.yml --vault-password-file ~/.vault_pass.txt
+
