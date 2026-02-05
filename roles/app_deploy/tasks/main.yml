@@ -1,0 +1,11 @@
+---
+- name: Deploy application artifact
+  copy:
+    src: app.tar.gz
+    dest: /opt/app.tar.gz
+
+- name: Extract application
+  unarchive:
+    src: /opt/app.tar.gz
+    dest: /opt/app
+    remote_src: yes
